@@ -11,7 +11,10 @@ Developed using:
 ### steps to run the app
 
 first install yarn & nodemon if installed already skip this step:<br/>
-`npm i yarn nodemon -g`
+`npm i yarn nodemon concurrently -g`
+
+clone the repository: <br/>
+`git clone https://github.com/fayeed/mern-to-do-list.git`<br/>
 
 go to the project directory and run:<br/>
 `npm i`<br/>
