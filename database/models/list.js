@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// List object schema for the object
 var listSchema = new mongoose.Schema({
   userID: {
     type: String,
@@ -14,11 +15,11 @@ var listSchema = new mongoose.Schema({
     required: true
   },
   time: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   }
 });
 
 var List = mongoose.model("List", listSchema);
 
-module.exports.List = List
+module.exports.List = List;

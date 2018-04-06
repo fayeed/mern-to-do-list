@@ -3,47 +3,57 @@ import Axios from "axios";
 
 const { Provider, Consumer } = React.createContext()
 
+// holds the state of the whole application
 class MainContext extends Component {
   state = {
-    list: [],
-    id: "",
-    email: "",
-    password: "",
-    username: "",
-    message: "",
-    isLoggedIn: false,
-    isSignUpOpen: true,
-    isInputOpen: false
+    list: [], // list array
+    id: "", // userID of the user
+    email: "", // email ID of the user
+    password: "", // password of the user
+    username: "", // username of the user
+    message: "", // message of the user
+    isLoggedIn: false, // loggedIn flag
+    isSignUpOpen: true, // Authenthication container flag
+    isInputOpen: false // InputConatiner flag
   };
 
+  // change Email triggers onChange method of the Input
   changeEmail = email => {
     this.setState({ email });
   };
 
+  // change Password triggers onChange method of the Input
   changePassword = password => {
     this.setState({ password });
   };
 
+  // change Username triggers onChange method of the Input
   changeUsername = username => {
     this.setState({ username });
   };
 
+  // chnage Message triggers onChange method of the Input
   changeMessage = message => {
     this.setState({message})
   }
 
+  // flag toggle for the loggedIn
   toggleIsLoggedIn = () => {
     this.setState({ isLoggedIn: !this.state.isLoggedIn, isSignUpOpen: false, username: "", email: "", password: "", list: [] });
   };
 
+  // flag toggle for the signup
   toggleSignUp = () => {
     this.setState({isSignUpOpen: !this.state.isSignUpOpen})
   }
 
+  // flag toggle for the input
   toggleInput = () => {
     this.setState({isInputOpen: !this.state.isInputOpen})
   }
 
+  // makes the rest api call to the server to get thse user
+  // update the state id, loggedInb, isSignUp
   getUser = () => {
     Axios.get(
       `api/getUser?email=${this.state.email}&password=${this.state.password}`
@@ -58,6 +68,8 @@ class MainContext extends Component {
     });
   };
 
+  // makes the rest api call to the server to add thse user
+  // update the state id, loggedInb, isSignUp
   addUser = () => {
     console.log('click')
     Axios.post(
@@ -75,6 +87,8 @@ class MainContext extends Component {
     });
   };
 
+  // makes the rest api call to the server to get thse list
+  // update the state list
   getList = () => {
     console.log('id', this.state.id)
     Axios.get(`api/getList?userID=${this.state.id}`).then(res => {
@@ -88,6 +102,8 @@ class MainContext extends Component {
     });
   };
 
+  // makes the rest api call to the server to add thse list
+  // update the state list, isInputOpen, message
   addItem = () => {
     Axios.post(`api/addItem?userID=${this.state.id}&message=${this.state.message}`).then(
       res => {
@@ -104,6 +120,8 @@ class MainContext extends Component {
     );
   };
 
+  // makes the rest api call to the server to remove thse item from the list
+  // update the state list
   removeItem = itemID => {
     Axios.delete(`api/removeItem?listID=${itemID}`).then(res => {
       if (res === "" || res === null) {
@@ -118,6 +136,8 @@ class MainContext extends Component {
     });
   };
 
+  // makes the rest api call to the server to check the item
+  // update the state list
   checkItem = (itemID, checked) => {
     Axios.put(`api/checked?listID=${itemID}&checked=${checked}`).then(res => {
       if (res === "" || res === null) {
@@ -144,6 +164,8 @@ class MainContext extends Component {
 
   render() {
     return (
+      // pass all the function and state as value prop to
+      // the provider
       <Provider
         value={{
           ...this.state,
@@ -162,7 +184,7 @@ class MainContext extends Component {
           changeMessage: this.changeMessage
         }}
       >
-        {this.props.children}{" "}
+        {this.props.children}
       </Provider>
     );
   }

@@ -4,6 +4,7 @@ import HeroInput from "../../components/HeroInput/HeroInput";
 
 import classes from "./InputContainer.css";
 
+// inputContainer holds the heroInput
 const InputContainer = () => {
   return (
     <Consumer>

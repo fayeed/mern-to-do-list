@@ -3,8 +3,9 @@ import Input from "../Input/Input";
 
 import classes from "./LogIn.css";
 
+// login compoennt 
 const LogIn = props => {
-  const modifier = "gray";
+  const modifier = "gray"; // default style
 
   return (
     <div className={classes.LogIn}>
@@ -33,7 +34,6 @@ const LogIn = props => {
           modifier={modifier}
           onClick={() => {
             props.getUser();
-            // props.fetchList();
           }}
           label="Log in"
         />

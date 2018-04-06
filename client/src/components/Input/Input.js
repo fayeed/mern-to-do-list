@@ -2,11 +2,16 @@ import React from "react";
 
 import classes from "./Input.css";
 
+// a all in one input element which bundles all
+// the other in build input element with the personalized
+// look makes choice using props => type
 const Input = props => {
   let InputElement = null;
 
   switch (props.type) {
     case "Input":
+      // Single Input element with a nice
+      // slideing up label
       InputElement = (
         <React.Fragment>
           <input
@@ -36,6 +41,7 @@ const Input = props => {
       break;
 
     case "Select":
+      // select element
       let item = props.list.map(ele => (
         <option key={ele.id} value={ele.id}>
           {ele.name}
@@ -56,6 +62,8 @@ const Input = props => {
       break;
 
     case "Button":
+      // button element with two styles
+      // gray is the default one white is the secondary
       InputElement = (
         <button
           className={[
@@ -75,6 +83,7 @@ const Input = props => {
       break;
 
     case "Logout":
+      // separate logout button it looks different then the normal button
       InputElement = (
         <button
           className={classes.InputElement__logout}

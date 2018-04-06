@@ -3,6 +3,7 @@ import Input from "../Input/Input";
 
 import classes from "./SignUp.css";
 
+// signup component
 const SignUp = props => {
   return (
     <div

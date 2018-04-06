@@ -3,6 +3,8 @@ import { Consumer } from "../../context/MainContext";
 
 import classes from "./addItemBtn.css";
 
+// add Button Item used as a toggle for showing InputContainer
+// consumes the context from MainContext
 const addItemBtn = props => {
   return (
     <Consumer>
