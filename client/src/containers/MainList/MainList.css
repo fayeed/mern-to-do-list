@@ -1,0 +1,30 @@
+.MainList {
+    margin-top: 2em;
+    color: rgb(82, 82, 82);
+}
+
+.MainList__userIcon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 2em;
+    width: 3em;
+}
+
+.MainList__greetings {
+    margin: 0em 2.3em;
+    margin-bottom: 1em;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.MainList__greetings span {
+    margin-top: 1em;
+    font-size: 1.4em;
+}
+
+.MainList__noItem {
+    margin-left: 5em;
+    font-size: 20px;
+}

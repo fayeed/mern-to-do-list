@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Axios from "axios";
 
-const { Provider, Consumer } = React.createContext();
+const { Provider, Consumer } = React.createContext()
 
 class MainContext extends Component {
   state = {
@@ -10,7 +10,10 @@ class MainContext extends Component {
     email: "",
     password: "",
     username: "",
-    isLoggedIn: false
+    message: "",
+    isLoggedIn: false,
+    isSignUpOpen: true,
+    isInputOpen: false
   };
 
   changeEmail = email => {
@@ -25,9 +28,21 @@ class MainContext extends Component {
     this.setState({ username });
   };
 
+  changeMessage = message => {
+    this.setState({message})
+  }
+
   toggleIsLoggedIn = () => {
-    this.setState({ isLoggedIn: !this.state.isLoggedIn });
+    this.setState({ isLoggedIn: !this.state.isLoggedIn, isSignUpOpen: false, username: "", email: "", password: "", list: [] });
   };
+
+  toggleSignUp = () => {
+    this.setState({isSignUpOpen: !this.state.isSignUpOpen})
+  }
+
+  toggleInput = () => {
+    this.setState({isInputOpen: !this.state.isInputOpen})
+  }
 
   getUser = () => {
     Axios.get(
@@ -36,14 +51,15 @@ class MainContext extends Component {
       if (res === "" || res === null) {
         return false;
       } else {
-        console.log(res);
-        this.setState({ isLoggedIn: !this.state.isLoggedIn });
+        console.log('log', res.data._id );
+        this.setState({ isLoggedIn: !this.state.isLoggedIn, id:res.data._id, isSignUpOpen: false });
         this.getList();
       }
     });
   };
 
   addUser = () => {
+    console.log('click')
     Axios.post(
       `api/addUser?email=${this.state.email}&password=${
         this.state.password
@@ -53,34 +69,35 @@ class MainContext extends Component {
         return false;
       } else {
         console.log(res);
-        this.setState({ isLoggedIn: !this.state.isLoggedIn });
+        this.setState({ isLoggedIn: !this.state.isLoggedIn, id: res.data._id, isSignUpOpen: false });
         return true;
       }
     });
   };
 
   getList = () => {
+    console.log('id', this.state.id)
     Axios.get(`api/getList?userID=${this.state.id}`).then(res => {
       if (res === "" || res === null) {
         return false;
       } else {
         console.log(res);
-        this.setState({ list: res });
+        this.setState({ list: res.data });
         return true;
       }
     });
   };
 
-  addItem = message => {
-    Axios.post(`api/addItem?userID=${this.state.id}&message=${message}`).then(
+  addItem = () => {
+    Axios.post(`api/addItem?userID=${this.state.id}&message=${this.state.message}`).then(
       res => {
         if (res === "" || res === null) {
           return false;
         } else {
-          console.log(res);
-          let list = this.state.list;
-          list.push(res);
-          this.setState({ list });
+          console.log(res.data);
+          let list = this.state.list || [];
+          list.push(res.data);
+          this.setState({ list, isInputOpen: false, message: "" });
           return true;
         }
       }
@@ -94,23 +111,22 @@ class MainContext extends Component {
       } else {
         console.log(res);
         let list = this.state.list;
-        let newList = list.filter(ele => ele.id !== itemID);
+        let newList = list.filter(ele => ele._id !== itemID);
         this.setState({ list: newList });
         return true;
       }
     });
   };
 
-  checkItem = itemID => {
-    Axios.post(`api/checked?listID=${itemID}`).then(res => {
+  checkItem = (itemID, checked) => {
+    Axios.put(`api/checked?listID=${itemID}&checked=${checked}`).then(res => {
       if (res === "" || res === null) {
         return false;
       } else {
-        console.log(res);
         let list = this.state.list;
         let newList = list.map(ele => {
-          if (ele.id === itemID) {
-            ele.completed = !ele.completed;
+          if (ele._id === itemID) {
+            ele.completed = checked;
             return ele;
           } else {
             return ele;
@@ -122,12 +138,17 @@ class MainContext extends Component {
     });
   };
 
+  componentDidMount() {
+    this.getList()
+  }
+
   render() {
     return (
       <Provider
         value={{
           ...this.state,
           getUser: this.getUser,
+          addUser: this.addUser,
           addItem: this.addItem,
           getList: this.getList,
           removeItem: this.removeItem,
@@ -135,10 +156,13 @@ class MainContext extends Component {
           changeEmail: this.changeEmail,
           changePassword: this.changePassword,
           changeUsername: this.changeUsername,
-          toggleIsLoggedIn: this.toggleIsLoggedIn
+          toggleLoggedIn: this.toggleIsLoggedIn,
+          toggleSignUp: this.toggleSignUp,
+          toggleInput: this.toggleInput,
+          changeMessage: this.changeMessage
         }}
       >
-        {this.props.children}
+        {this.props.children}{" "}
       </Provider>
     );
   }

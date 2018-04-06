@@ -6,7 +6,9 @@ const db = require("./database/database");
 // connects to mongo server
 db.startMongo();
 
+// intialize
 const app = express();
+
 const port = process.env.PORT || 5000;
 
 app.get("/api/getUser", user.getUser);
