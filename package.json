@@ -5,7 +5,7 @@
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "npm server && npm client"
+    "start": "npm run dev"
 
   },
   "dependencies": {
